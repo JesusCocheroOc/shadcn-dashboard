@@ -9,6 +9,7 @@ const links = [
     /*/// Implementar la navegación a la pagina en el menu de navegación  */
     { name: 'button', href: 'button' },
     { name: 'alert-dialog', href: 'alert-dialog' },
+    { name: 'dialog', href: 'dialog' },
 ];
 
 export default function DashboardLayout({
