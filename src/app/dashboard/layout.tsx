@@ -3,10 +3,12 @@
 
 import Link from 'next/link';
 
-/// Crear la capeta y este layout tomarlo de repo
 const links = [
     { name: 'accordion', href: 'accordion' },
     { name: 'alert', href: 'alert' },
+    /*/// Implementar la navegación a la pagina en el menu de navegación  */
+    { name: 'button', href: 'button' },
+    { name: 'alert-dialog', href: 'alert-dialog' },
 ];
 
 export default function DashboardLayout({
