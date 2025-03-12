@@ -19,6 +19,10 @@ const links = [
     { name: 'checkbox', href: 'checkbox' },
     { name: 'command', href: 'command' },
     { name: 'combobox', href: 'combobox' },
+    { name: 'context-menu', href: 'context-menu' },
+    { name: 'menu-bar', href: 'menu-bar' },
+    { name: 'input-otp', href: 'input-otp' },
+    { name: 'progress', href: 'progress' },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 export default function DashboardLayout({
@@ -169,7 +173,8 @@ export default function DashboardLayout({
                             </div>
                         </div>
                     </main>
-                    <footer className='bg-white md:flex md:items-center md:justify-between shadow rounded-lg p-4 md:p-6 xl:p-8 my-6 mx-4'>
+                    {/*/// clase de tailwind para cuando queramos imprimir pantalla no se visualice, print:hidden  */}
+                    <footer className='print:hidden bg-white md:flex md:items-center md:justify-between shadow rounded-lg p-4 md:p-6 xl:p-8 my-6 mx-4'>
                         <ul className='flex items-center flex-wrap mb-6 md:mb-0'>
                             <li>
                                 <a
@@ -296,7 +301,7 @@ export default function DashboardLayout({
                             </a>
                         </div>
                     </footer>
-                    <p className='text-center text-sm text-gray-500 my-10'>
+                    <p className='text-center text-sm text-gray-500 my-10 print:hidden'>
                         &copy; 2019-{new Date().getFullYear()}{' '}
                         <a href='#' className='hover:underline' target='_blank'>
                             Themesberg
