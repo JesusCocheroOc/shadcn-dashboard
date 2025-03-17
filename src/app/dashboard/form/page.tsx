@@ -1,9 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { z } from 'zod';
-
 
 import { Button } from '@/components/ui/button';
 import {
@@ -17,41 +16,44 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-
-/// 1. agregar el tipo y validaciones
+/// 1. Agregar validaciones y permitir un arreglo de usernames
 const formSchema = z.object({
     username: z.string().min(2).max(20),
     email: z.string().email(),
+    usernames: z.array(z.string().min(2).max(20)).min(1), // Definimos el array de usernames
 });
 
-
-const page = () => {
-    // 1. Define your form.
-
-    /// 2. agregar el valor inicial
+const Page = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             username: '',
             email: '',
+            usernames: [''], // Inicializamos con un username
         },
     });
 
-    // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log({values});
-    }
+    // useFieldArray para manejar los campos dinámicos
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: 'usernames', // El nombre del campo es 'usernames' en el esquema
+    });
+
+    // 2. Define un manejador de submit
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
+        // Este es el manejador de envío del formulario
+        console.log(values);
+    };
+
     return (
-        <div className=''>
-            {/*/// este es el form provider de react hook form  */}
+        <div className='p-8'>
+            {/* Formulario de React Hook Form */}
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className='grid grid-cols-2 gap-4'
                 >
-                    {/* username */}
+                    {/* Username */}
                     <FormField
                         control={form.control}
                         name='username'
@@ -69,7 +71,7 @@ const page = () => {
                         )}
                     />
 
-                    {/*/// email agregar su input, estos se pueden hacer un componente que es lo ideal */}
+                    {/* Email */}
                     <FormField
                         control={form.control}
                         name='email'
@@ -77,7 +79,11 @@ const page = () => {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input type='email' placeholder='email' {...field} />
+                                    <Input
+                                        type='email'
+                                        placeholder='email'
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormDescription>
                                     This is your public display email.
@@ -87,6 +93,41 @@ const page = () => {
                         )}
                     />
 
+                    {/* Campos dinámicos de username */}
+                    {fields.map((item, index) => (
+                        <FormField
+                            key={item.id}
+                            control={form.control}
+                            name={`usernames.${index}`}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Username {index + 1}</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder={`Username ${
+                                                index + 1
+                                            }`}
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                    {/* Botón para eliminar el campo */}
+                                    <Button
+                                        type='button'
+                                        onClick={() => remove(index)}
+                                    >
+                                        Remove Username {index + 1}
+                                    </Button>
+                                </FormItem>
+                            )}
+                        />
+                    ))}
+
+                    {/* Botón para agregar más campos dinámicos */}
+                    <Button type='button' onClick={() => append('')}>
+                        Add Username
+                    </Button>
+
                     {/* Submit */}
                     <Button type='submit'>Submit</Button>
                 </form>
@@ -95,4 +136,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;
