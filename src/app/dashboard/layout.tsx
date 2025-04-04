@@ -24,6 +24,8 @@ const links = [
     { name: 'input-otp', href: 'input-otp' },
     { name: 'progress', href: 'progress' },
     { name: 'sonner', href: 'sonner' },
+    { name: 'skeleton', href: 'skeleton' },
+    { name: 'slider', href: 'slider' },
     { name: 'form', href: 'form' },
     { name: 'theme', href: 'theme' },
 ].sort((a, b) => a.name.localeCompare(b.name));
